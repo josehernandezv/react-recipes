@@ -20,7 +20,6 @@ class Home extends Component {
     render() {
         return (
             <div>
-                <h1>Pokedex</h1>
                 <ul>
                     {this.state.pokemon.map(({name}) => (
                         <li key={name}>
