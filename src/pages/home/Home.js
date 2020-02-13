@@ -6,7 +6,8 @@ import { Link } from 'react-router-dom';
 class Home extends Component {
 
     state = {
-        pokemon: []
+        pokemon: [],
+        filter: ''
     }
 
     componentDidMount() {
@@ -17,11 +18,27 @@ class Home extends Component {
             });
     }
 
+    handleChange = event => {
+        this.setState({ filter: event.target.value });
+    }
+
+    filterPokemon = () => {
+        const { pokemon, filter } = this.state
+        return pokemon.filter(
+            item => item.name.toLowerCase().search(filter.toLowerCase()) !== -1)
+    }
+
     render() {
+        const items = this.filterPokemon()
         return (
             <div>
+                <input 
+                    type="text" 
+                    value={this.state.filter} 
+                    onChange={this.handleChange}
+                />
                 <ul>
-                    {this.state.pokemon.map(({name}) => (
+                    {items.map(({name}) => (
                         <li key={name}>
                             <Link to={`/${name}`}>{name}</Link>
                         </li>
