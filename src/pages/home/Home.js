@@ -1,87 +1,49 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom';
-import useFetch from '../../hooks/useFetch'
-
+import React, { useState } from 'react';
+import useFetch from '../../hooks/useFetch';
+import PokemonList from './PokemonList';
+import TextField from '@material-ui/core/TextField';
+import InputAdornment from '@material-ui/core/InputAdornment';
 // https://assets.pokemon.com/assets/cms2/img/pokedex/detail/002.png
+import Search from '@material-ui/icons/Search';
+import { appendImages } from '../../utils';
 
 const Home = () => {
     const [filter, setFilter] = useState('');
-    const { results, isLoading } = useFetch('pokemon?limit=150')
+    const { results, isLoading } = useFetch('pokemon?limit=150');
 
-    const pokemon = results
+    const pokemon = appendImages(results);
 
-    const handleChange = event => {
+    const handleChange = (event) => {
         setFilter(event.target.value);
-    }
+    };
 
     const items = pokemon.filter(
-        item => item.name.toLowerCase().search(filter.toLowerCase()) !== -1)
+        (item) => item.name.toLowerCase().search(filter.toLowerCase()) !== -1
+    );
 
-    if (isLoading) return <p>loading...</p>
+    if (isLoading) return <p>loading...</p>;
+
+    console.log(items);
     return (
         <div>
-            <input 
-                type="text" 
-                value={filter} 
+            <TextField
+                id="outlined-basic"
+                variant="outlined"
+                type="text"
+                value={filter}
                 onChange={handleChange}
+                fullWidth
+                InputProps={{
+                    startAdornment: (
+                        <InputAdornment position="start">
+                            <Search />
+                        </InputAdornment>
+                    ),
+                }}
             />
-            <ul>
-                {items.map(({name}) => (
-                    <li key={name}>
-                        <Link to={`/${name}`}>{name}</Link>
-                    </li>
-                ))}
-            </ul>
+            <PokemonList pokemon={items} />
         </div>
     );
-}
+};
 
 export default Home;
-
-// class Home extends Component {
-
-//     state = {
-//         pokemon: [],
-//         filter: ''
-//     }
-
-//     componentDidMount() {
-//         fetch('https://pokeapi.co/api/v2/pokemon?limit=150')
-//             .then(response => response.json())
-//             .then(data => {
-//                 this.setState({ pokemon: data.results })
-//             });
-//     }
-
-//     handleChange = event => {
-//         this.setState({ filter: event.target.value });
-//     }
-
-//     filterPokemon = () => {
-//         const { pokemon, filter } = this.state
-//         return pokemon.filter(
-//             item => item.name.toLowerCase().search(filter.toLowerCase()) !== -1)
-//     }
-
-//     render() {
-//         const items = this.filterPokemon()
-//         return (
-//             <div>
-//                 <input 
-//                     type="text" 
-//                     value={this.state.filter} 
-//                     onChange={this.handleChange}
-//                 />
-//                 <ul>
-//                     {items.map(({name}) => (
-//                         <li key={name}>
-//                             <Link to={`/${name}`}>{name}</Link>
-//                         </li>
-//                     ))}
-//                 </ul>
-//             </div>
-//         )
-//     }
-// }
-
-// export default Home;

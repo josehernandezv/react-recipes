@@ -1,39 +1,10 @@
-import React from 'react'
-import useClock from './useClock'
+import React from 'react';
+import useClock from './useClock';
+import Typography from '@material-ui/core/Typography';
 
 const Clock = () => {
     const date = useClock();
-    return (
-        <p>{date.toLocaleTimeString()}</p>
-    )
-}
+    return <Typography>{date.toLocaleTimeString()}</Typography>;
+};
 
-// class Clock extends Component {
-
-//     state = {
-//         date: new Date()
-//     }
-
-//     componentDidMount() {
-//         this.timerID = setInterval(
-//             () => this.tick(),
-//             1000
-//         );
-//     }
-    
-//     componentWillUnmount() {
-//         clearInterval(this.timerID);
-//     }
-    
-//     tick() {
-//         this.setState({ date: new Date() });
-//     }
-
-//     render() {
-//         return (
-//             <p>{this.state.date.toLocaleTimeString()}</p>
-//         )
-//     }
-// }
-
-export default Clock
+export default Clock;
